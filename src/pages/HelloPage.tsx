@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight } from "lucide-react";
 import { useOwner } from "../lib/avatars";
+import { goFullscreen } from "../lib/fullscreen";
 import "./room.css";
 
 gsap.registerPlugin(useGSAP);
@@ -42,6 +43,7 @@ export function HelloPage({ onContinue }: { onContinue: () => void }) {
     onContinue();
   };
   const leave = contextSafe(() => {
+    goFullscreen();
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return go();
     window.setTimeout(go, 900); // safety net if animation frames are paused
     gsap

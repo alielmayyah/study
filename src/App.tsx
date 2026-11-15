@@ -8,6 +8,7 @@ import { DemoRoom } from './pages/DemoRoom'
 import { HelloPage } from './pages/HelloPage'
 import { Splash } from './components/Splash'
 import { BloomLoader, PageTransition } from './components/Transitions'
+import { goFullscreen } from './lib/fullscreen'
 import { OwnerContext, fallbackAvatar, type Owner } from './lib/avatars'
 
 const PIN_LENGTH = 4
@@ -50,7 +51,7 @@ function SignIn({ session, onUnlocked }: { session: Session | null; onUnlocked: 
       {!configured ? <div className="notice">Add your Supabase URL and public key to <code>.env.local</code> to connect this room.</div> : <>
         <form onSubmit={e => { e.preventDefault(); if (passcode.length === PIN_LENGTH) void submit(passcode) }}>
           <label htmlFor="passcode" className="pin-label">Enter your PIN</label>
-          <div className={`pin-cells ${error ? 'has-error' : ''} ${busy ? 'is-busy' : ''}`} onClick={() => input.current?.focus()}>
+          <div className={`pin-cells ${error ? 'has-error' : ''} ${busy ? 'is-busy' : ''}`} onClick={() => { goFullscreen(); input.current?.focus() }}>
             {Array.from({ length: PIN_LENGTH }, (_, i) => (
               <span key={i} className={`pin-cell ${i < passcode.length ? 'filled' : ''} ${i === passcode.length && !busy ? 'active' : ''}`} aria-hidden="true">
                 {i < passcode.length && <i />}

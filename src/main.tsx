@@ -6,7 +6,8 @@ import { goFullscreen } from './lib/fullscreen'
 
 import './styles.css'
 
-// Go full screen on the first tap anywhere (browsers require a tap).
-document.addEventListener('click', goFullscreen, { once: true })
+// Force full screen: every tap re-enters it (browsers require a user gesture).
+document.addEventListener('click', goFullscreen)
+document.addEventListener('touchend', goFullscreen)
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><HashRouter><App /></HashRouter></React.StrictMode>)

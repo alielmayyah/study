@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { BloomTimer } from "../components/BloomTimer";
 import { BloomLoader } from "../components/Transitions";
+import { goFullscreen } from "../lib/fullscreen";
 import {
   Check,
   History,
@@ -456,6 +457,7 @@ export function RoomView({
               : `${paused ? "Paused" : onBreak ? "Break" : "Focus"} timer: ${formatCountdown(timeLeft)} remaining`
           }
           onClick={() => {
+            goFullscreen();
             if (idle && !busy && connected && validDuration) void command("start");
           }}
           onKeyDown={(event) => {
