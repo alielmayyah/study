@@ -1,0 +1,418 @@
+/* ---------- Minimal history ---------- */
+.history-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+.h-main {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 40px 20px max(48px, env(safe-area-inset-bottom));
+}
+.h-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding: 0 16px 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.h-back:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.h-back:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+.h-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.h-avatar {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--pink);
+  box-shadow: 0 0 0 4px rgba(224, 148, 184, 0.12), 0 0 24px rgba(224, 148, 184, 0.35);
+}
+.h-title {
+  margin: 0;
+  font-size: clamp(40px, 11vw, 56px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--pink);
+}
+.h-quiet {
+  margin: 32px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.h-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--pink);
+}
+.h-section {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.h-block {
+  margin-top: 40px;
+}
+.h-duration {
+  flex: none;
+  color: var(--pink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shared pill */
+.h-pill,
+.h-chip {
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.h-pill:hover:not(:disabled),
+.h-chip:hover:not([aria-pressed='true']) {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+.h-pill:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* 1. Day picker */
+.h-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+.h-chip[aria-pressed='true'] {
+  border-color: var(--pink);
+  background: var(--pink);
+  color: #fff;
+}
+.h-cal {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+}
+.h-cal-inner {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--bg-surface);
+}
+.h-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.h-cal-nav {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.h-cal-nav:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+.h-cal-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.h-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+.h-cal-wd {
+  padding: 4px 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.h-cal-day {
+  position: relative;
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.h-cal-day:hover:not(:disabled):not(.is-selected) {
+  background: rgba(255, 255, 255, 0.06);
+}
+.h-cal-day:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.h-cal-day.is-today {
+  color: var(--pink);
+  font-weight: 600;
+}
+.h-cal-day.is-selected {
+  background: var(--pink);
+  color: #fff;
+}
+.h-cal-dot {
+  display: block;
+  border-radius: 50%;
+  background: var(--pink);
+}
+.h-cal-day.is-selected .h-cal-dot {
+  background: var(--bg-app);
+}
+
+/* 2. Selected day card */
+.h-card {
+  margin-top: 24px;
+  padding: 22px 20px;
+  border-radius: 24px;
+  background: var(--bg-surface);
+}
+.h-big {
+  margin: 0;
+  font-size: clamp(34px, 10vw, 44px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--pink);
+  font-variant-numeric: tabular-nums;
+}
+.h-big span {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+.h-flowers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.h-more {
+  font-size: 13px;
+  color: var(--pink);
+}
+.h-count {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.h-rest {
+  margin: 0;
+  padding: 12px 0 4px;
+  font-size: 17px;
+  color: var(--text-secondary);
+}
+.h-strip {
+  margin-top: 22px;
+}
+.h-strip-bar {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.h-strip-seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: var(--pink);
+}
+.h-strip-tick {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: 1px;
+  background: var(--line);
+}
+.h-strip-labels {
+  position: relative;
+  height: 16px;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.h-strip-labels span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+.h-strip-labels span:first-child {
+  transform: none;
+}
+.h-strip-labels span:last-child {
+  transform: translateX(-100%);
+}
+.h-sessions {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+}
+.h-sessions li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3. Little insights */
+.h-insights {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.h-insight {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--bg-surface);
+}
+.h-emoji {
+  font-size: 20px;
+  line-height: 1;
+}
+.h-insight strong {
+  margin-top: 6px;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.h-insight span:last-child {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* 4. 14-day chart */
+.h-chart {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.h-bar {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.h-bar-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0 3px 4px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.h-bar-btn:hover .h-bar-fill {
+  opacity: 0.7;
+}
+.h-bar-track {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--line);
+}
+.h-bar-fill {
+  width: 100%;
+  height: 0;
+  border-radius: 6px 6px 2px 2px;
+  background: var(--pink);
+  opacity: 0.35;
+}
+.h-bar.is-today .h-bar-fill {
+  background: var(--pink);
+  opacity: 1;
+}
+.h-bar-label {
+  min-width: 22px;
+  padding: 2px 0;
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.h-bar.is-today .h-bar-label {
+  color: var(--pink);
+  font-weight: 600;
+}
+.h-bar.is-selected .h-bar-label {
+  background: var(--pink);
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .h-main {
+    padding-top: 72px;
+  }
+  .h-bar-btn {
+    padding: 0 4px 4px;
+  }
+}
