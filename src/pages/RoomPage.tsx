@@ -326,6 +326,9 @@ export function RoomView({
         });
         gsap.from(".m-avatar img", { scale: 0.7, duration: 0.9, ease: "elastic.out(1, 0.6)" });
       });
+      // Safety net: if animation frames are paused, still show everything.
+      const reveal = window.setTimeout(() => gsap.set(".m-in, .m-avatar img", { clearProps: "opacity,visibility,transform" }), 2000);
+      return () => window.clearTimeout(reveal);
     },
     { scope: root },
   );
