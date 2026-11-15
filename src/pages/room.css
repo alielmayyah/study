@@ -943,3 +943,112 @@ a.m-today:hover {
 .bl-heart {
   fill: var(--pink);
 }
+/* ---------- Install gate (iPhone/iPad Safari) ---------- */
+.install-gate {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 20px calc(80px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(236, 127, 176, 0.18), transparent 60%),
+    var(--bg-app);
+}
+.install-gate.is-ipad {
+  padding: calc(80px + env(safe-area-inset-top)) 20px 24px;
+}
+.ig-card {
+  width: min(400px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+.ig-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: rgba(236, 127, 176, 0.16);
+  color: var(--pink-soft);
+  border: 1px solid var(--pink-border);
+}
+.install-gate h1 {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.ig-sub {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: 300px;
+}
+.ig-steps {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ig-steps li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.ig-steps strong {
+  color: var(--pink-soft);
+}
+.ig-num {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--pink);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+.ig-inline {
+  display: inline-block;
+  vertical-align: -3px;
+  color: var(--pink-soft);
+}
+.ig-skip {
+  margin-top: 8px;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-decoration: underline;
+  padding: 10px;
+}
+.ig-arrow {
+  position: fixed;
+  left: 50%;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  font-size: 34px;
+  color: var(--pink);
+  pointer-events: none;
+}
+.is-ipad .ig-arrow {
+  top: calc(14px + env(safe-area-inset-top));
+  bottom: auto;
+  left: auto;
+  right: 18%;
+  transform: none;
+}

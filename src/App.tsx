@@ -9,6 +9,8 @@ import { HelloPage } from './pages/HelloPage'
 import { Splash } from './components/Splash'
 import { BloomLoader, PageTransition } from './components/Transitions'
 import { goFullscreen } from './lib/fullscreen'
+import { InstallGate } from './components/InstallGate'
+import { isIOS, isStandalone } from './lib/pushSubscription'
 import { OwnerContext, fallbackAvatar, type Owner } from './lib/avatars'
 
 const PIN_LENGTH = 4
@@ -71,6 +73,11 @@ export default function App() {
   const [profileId, setProfileId] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
   const [splash, setSplash] = useState(true)
+  // iPhone/iPad in Safari: ask for the Home Screen install first (full screen + lock-screen alerts).
+  const [gate, setGate] = useState(() => {
+    if (import.meta.env.DEV && window.location.search.includes('install')) return true
+    try { return isIOS() && !isStandalone() && sessionStorage.getItem('skip-install') !== 'true' } catch { return false }
+  })
   // The greeting page shows every time the app opens, and again after each unlock.
   const [greeted, setGreeted] = useState(false)
   const [owner, setOwner] = useState<Owner | null>(null)
@@ -118,6 +125,7 @@ export default function App() {
     {screen()}
   </OwnerContext.Provider>
   function screen() {
+    if (gate) return splash ? null : <InstallGate onSkip={() => { setGate(false); try { sessionStorage.setItem('skip-install', 'true') } catch { /* storage unavailable */ } }} />
     if (import.meta.env.DEV && window.location.hash.startsWith('#/demo-hello')) return <HelloPage onContinue={() => {}} />
     if (import.meta.env.DEV && window.location.hash.startsWith('#/demo')) return <DemoRoom />
     if (!ready) return splash ? null : <div className="loading-screen"><BloomLoader /></div>
