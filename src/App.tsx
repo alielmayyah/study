@@ -48,8 +48,15 @@ function SignIn({ session, onUnlocked }: { session: Session | null; onUnlocked: 
       <h1>Welcome.<br/><em>Let’s bloom.</em></h1>
       {!configured ? <div className="notice">Add your Supabase URL and public key to <code>.env.local</code> to connect this room.</div> : <>
         <form onSubmit={e => { e.preventDefault(); if (passcode.length === PIN_LENGTH) void submit(passcode) }}>
-          <label htmlFor="passcode" className="sr-only">PIN</label>
-          <input ref={input} id="passcode" className="pin-input" type="password" inputMode="numeric" pattern="[0-9]*" maxLength={PIN_LENGTH} required autoComplete="current-password" value={passcode} onChange={e => type(e.target.value)} readOnly={busy} placeholder="••••" autoFocus/>
+          <label htmlFor="passcode" className="pin-label">Enter your PIN</label>
+          <div className={`pin-cells ${error ? 'has-error' : ''} ${busy ? 'is-busy' : ''}`} onClick={() => input.current?.focus()}>
+            {Array.from({ length: PIN_LENGTH }, (_, i) => (
+              <span key={i} className={`pin-cell ${i < passcode.length ? 'filled' : ''} ${i === passcode.length && !busy ? 'active' : ''}`} aria-hidden="true">
+                {i < passcode.length && <i />}
+              </span>
+            ))}
+            <input ref={input} id="passcode" className="pin-input" type="password" inputMode="numeric" pattern="[0-9]*" maxLength={PIN_LENGTH} required autoComplete="one-time-code" value={passcode} onChange={e => type(e.target.value)} readOnly={busy} autoFocus/>
+          </div>
         </form>
         {error && <p role="alert" className="error">{error}</p>}
       </>}

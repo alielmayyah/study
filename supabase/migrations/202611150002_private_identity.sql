@@ -34,7 +34,7 @@ begin
     return null;
   end if;
 
-  delete from private.unlock_attempts;
+  delete from private.unlock_attempts where attempted_at <= now();
   insert into public.profile_access(auth_user_id, profile_id) values(auth.uid(), match)
     on conflict(auth_user_id) do update set profile_id = excluded.profile_id;
   return match;
