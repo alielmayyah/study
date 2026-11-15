@@ -7,6 +7,7 @@ import { HistoryPage } from './pages/HistoryPage'
 import { DemoRoom } from './pages/DemoRoom'
 import { HelloPage } from './pages/HelloPage'
 import { Splash } from './components/Splash'
+import { BloomLoader, PageTransition } from './components/Transitions'
 import { OwnerContext, fallbackAvatar, type Owner } from './lib/avatars'
 
 const PIN_LENGTH = 4
@@ -118,9 +119,9 @@ export default function App() {
   function screen() {
     if (import.meta.env.DEV && window.location.hash.startsWith('#/demo-hello')) return <HelloPage onContinue={() => {}} />
     if (import.meta.env.DEV && window.location.hash.startsWith('#/demo')) return <DemoRoom />
-    if (!ready) return <div className="loading-screen" />
+    if (!ready) return splash ? null : <div className="loading-screen"><BloomLoader /></div>
     if (!profileId) return splash ? null : <SignIn session={session} onUnlocked={unlocked} />
     if (!greeted) return splash || !owner ? null : <HelloPage onContinue={greet} />
-    return <Routes><Route path="/" element={<RoomPage userId={profileId}/>} /><Route path="/history" element={<HistoryPage userId={profileId}/>} /><Route path="*" element={<Navigate to="/" replace/>}/></Routes>
+    return <PageTransition><Routes><Route path="/" element={<RoomPage userId={profileId}/>} /><Route path="/history" element={<HistoryPage userId={profileId}/>} /><Route path="*" element={<Navigate to="/" replace/>}/></Routes></PageTransition>
   }
 }

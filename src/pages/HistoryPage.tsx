@@ -7,6 +7,7 @@ import { useGSAP } from '@gsap/react'
 import { useRoom } from '../hooks/useRoom'
 import { useClock } from '../hooks/useClock'
 import { useOwner } from '../lib/avatars'
+import { BloomLoader } from '../components/Transitions'
 import { activeIntervals, formatMinutes, localDayRange, totalTime } from '../lib/time'
 import type { Interval } from '../lib/time'
 import type { StudyBreak, StudySession } from '../lib/types'
@@ -215,7 +216,7 @@ export function HistoryPage({ userId }: { userId: string }) {
         <h1 className="h-title">History</h1>
       </div>
       {error && <div className="h-error" role="alert"><span>{error}</span><button className="h-pill" onClick={() => void reload()}>Retry</button></div>}
-      {loading ? <p className="h-quiet">Loading sessions…</p> : sessions.length === 0 ? <p className="h-quiet">No sessions yet. Your first pomodoro will show up here.</p> : <>
+      {loading ? <div className="h-quiet"><BloomLoader /></div> : sessions.length === 0 ? <p className="h-quiet">No sessions yet. Your first pomodoro will show up here.</p> : <>
 
         {/* 1. Day picker */}
         <div className="h-chips" role="group" aria-label="Choose a day">

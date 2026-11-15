@@ -931,3 +931,15 @@ a.m-today {
 a.m-today:hover {
   background: rgba(236, 127, 176, 0.12);
 }
+.bloom-loader {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.bl-petal {
+  fill: var(--pink-soft);
+  transform-box: fill-box;
+}
+.bl-heart {
+  fill: var(--pink);
+}

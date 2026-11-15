@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { BloomTimer } from "../components/BloomTimer";
+import { BloomLoader } from "../components/Transitions";
 import {
   Check,
   History,
@@ -64,8 +65,8 @@ export function RoomPage({ userId }: { userId: string }) {
   const now = useClock();
   if (room.loading && !room.data)
     return (
-      <div className="loading-screen" role="status">
-        Opening your room…
+      <div className="loading-screen">
+        <BloomLoader />
       </div>
     );
   if (!room.data)
@@ -542,7 +543,8 @@ export function RoomView({
             {actionError}
           </p>
         )}
-        <Link className="m-today m-in" to="/history" aria-label="Today’s progress, open history">
+        {(total >= 60000 || completed > 0) && (
+        <Link className="m-today" to="/history" aria-label="Today’s progress, open history">
           <span>{formatMinutes(total)} today</span>
           <i aria-hidden="true" />
           <span>
@@ -550,6 +552,7 @@ export function RoomView({
           </span>
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
+        )}
       </main>
       <div
         className="timer-toast-region"
