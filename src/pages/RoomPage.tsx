@@ -8,7 +8,11 @@ import {
   Check,
   History,
   LogOut,
-  ChevronRight,
+  ArrowRight,
+  BarChart3,
+  Flower2,
+  Heart,
+  Target,
   Minus,
   Plus,
   Pause,
@@ -192,6 +196,7 @@ export function RoomView({
     return totalTime(activeIntervals(s, data.breaks, now, day, cap));
   });
   const total = sessionTimes.reduce((sum, t) => sum + t, 0);
+  const longest = sessionTimes.length ? Math.max(...sessionTimes) : 0;
   const completed = mySessions.filter(
     (s) => s.ended_at && Date.parse(s.ended_at) >= day.start,
   ).length;
@@ -545,16 +550,30 @@ export function RoomView({
             {actionError}
           </p>
         )}
-        {(total >= 60000 || completed > 0) && (
-        <Link className="m-today" to="/history" aria-label="Today’s progress, open history">
-          <span>{formatMinutes(total)} today</span>
-          <i aria-hidden="true" />
-          <span>
-            {completed} {completed === 1 ? "pomodoro" : "pomodoros"}
-          </span>
-          <ChevronRight size={16} aria-hidden="true" />
-        </Link>
-        )}
+        <section className="m-day m-in" aria-labelledby="today-heading">
+          <div className="m-day-head">
+            <h2 id="today-heading">
+              <BarChart3 size={15} aria-hidden="true" /> TODAY
+            </h2>
+            <Link to="/history" className="m-day-link">
+              View insights <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="m-day-grid">
+            <div className="m-stat">
+              <span className="m-stat-label"><Target size={15} aria-hidden="true" /> Focus</span>
+              <strong>{formatMinutes(total)}</strong>
+            </div>
+            <div className="m-stat">
+              <span className="m-stat-label"><Flower2 size={15} aria-hidden="true" /> Pomodoros</span>
+              <strong>{completed}</strong>
+            </div>
+            <div className="m-stat">
+              <span className="m-stat-label"><Heart size={15} aria-hidden="true" /> Longest</span>
+              <strong>{formatMinutes(longest)}</strong>
+            </div>
+          </div>
+        </section>
       </main>
       <div
         className="timer-toast-region"
